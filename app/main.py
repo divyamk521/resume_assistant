@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 import os
 from app.loader import load_pdf
-from app.rag_pipeline import chunk_text, create_vector_store, retrieve_chunks
+from app.rag_pipeline import chunk_text, create_vector_store, generate_answer
 
 app = FastAPI()
 
@@ -46,20 +46,19 @@ async def upload_pdf(file: UploadFile = File(...)):
     vectorstore.save_local(VECTORSTORE_DIR)
 
     return {
-        "filename": file.filename,
-        "num_chunks": len(chunks),
-        "message": "Vector store created successfully"
+        "message": "Resume processed successfully"
     }
 
 
 @app.post("/query")
 def query_rag(request: QueryRequest):
     try:
-        docs = retrieve_chunks(request.question)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        answer = generate_answer(request.question)
+        return {
+            "question": request.question,
+            "answer": answer
+        }
 
-    return {
-        "question": request.question,
-        "retrieved_chunks": [doc.page_content for doc in docs]
-    }
+    except Exception as e:
+        print("ERROR:", str(e))  # 👈 IMPORTANT
+        raise HTTPException(status_code=500, detail=str(e))
