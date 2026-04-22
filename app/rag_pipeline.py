@@ -44,9 +44,15 @@ def generate_answer(query: str):
     context = "\n\n".join([doc.page_content for doc in docs])
 
     prompt_template = """
-You are a helpful recruiter assistant.
+You are an expert recruiter assistant.
 
-Use the context below to answer the question.
+Your task is to analyze a candidate's resume and answer questions accurately.
+
+Instructions:
+- Use ONLY the provided context
+- Be concise and structured
+- Highlight key skills, tools, and experience clearly
+- If information is missing, say "Not mentioned in resume"
 
 Context:
 {context}
@@ -54,7 +60,7 @@ Context:
 Question:
 {question}
 
-Answer clearly and concisely:
+Answer:
 """
 
     prompt = PromptTemplate.from_template(prompt_template)
