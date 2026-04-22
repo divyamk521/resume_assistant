@@ -1,76 +1,105 @@
 # 🧠 RAG Resume Assistant
 
-An end-to-end Retrieval-Augmented Generation (RAG) system that allows recruiters to query candidate resumes intelligently.
+An end-to-end **Retrieval-Augmented Generation (RAG)** system that allows recruiters to intelligently query candidate resumes using AI.
+
+---
 
 ## 🚀 Features
 
-- Upload PDF resumes
-- Extract and process text
-- Semantic search using embeddings
-- Context-aware answers using LLM (Groq)
-- FastAPI backend for API access
+- 📄 Upload and process PDF resumes
+- 🔍 Semantic search using vector embeddings
+- 🧠 Context-aware answers powered by LLM (Groq)
+- 💬 Chat-based interface (Streamlit UI)
+- ⚡ FastAPI backend for efficient processing
+
+---
 
 ## 🏗️ Tech Stack
 
-- FastAPI
-- LangChain
-- FAISS (Vector Database)
-- Sentence Transformers (Embeddings)
-- Groq API (LLM)
+- **Backend:** FastAPI  
+- **LLM:** Groq (LLaMA 3.1)  
+- **RAG Framework:** LangChain  
+- **Vector DB:** FAISS  
+- **Embeddings:** Sentence Transformers  
+- **Frontend/UI:** Streamlit  
 
-## 🔄 Pipeline
+---
 
-1. Upload Resume (PDF)
-2. Extract Text
-3. Chunk Text into Documents
-4. Generate Embeddings
-5. Store in FAISS Vector DB
-6. Retrieve Relevant Chunks
-7. Generate Answer using LLM
+## 🔄 How It Works (RAG Pipeline)
+
+1. 📄 Upload Resume (PDF)
+2. 🧾 Extract text from document
+3. ✂️ Split text into chunks
+4. 🔢 Convert chunks into embeddings
+5. 📦 Store embeddings in FAISS vector database
+6. 🔍 Retrieve relevant chunks for a query
+7. 🤖 Generate final answer using LLM
+
+---
+
+## 💬 Demo Flow
+
+1. Upload a resume  
+2. Ask questions like:
+   - *"What skills does this candidate have?"*
+   - *"What projects has the candidate worked on?"*
+3. Get accurate, context-aware answers instantly  
+
+---
 
 ## 📦 API Endpoints
 
-### Upload Resume
+### ➤ Upload Resume
+
 POST /upload
 
-### Ask Question
+
+### ➤ Query Resume
+
 POST /query
 
-Example:
+
+#### Example Request
 ```json
 {
   "question": "What skills does the candidate have?"
 }
 
-
-Setup
+⚙️ Setup Instructions
+1. Clone Repository
 git clone https://github.com/YOUR_USERNAME/rag-resume-assistant.git
 cd rag-resume-assistant
+2. Install Dependencies
 pip install -r requirements.txt
 
-Create .env:
+3. Configure Environment Variables
 
-GROQ_API_KEY=your_key
-HF_TOKEN=your_token (optional)
+Create a .env file:
 
-Run:
-
+GROQ_API_KEY=your_groq_api_key
+HF_TOKEN=your_huggingface_token (optional)
+4. Run Backend (FastAPI)
 uvicorn app.main:app --reload
+5. Run UI (Streamlit)
+streamlit run streamlit_app.py
 
+🧠 Use Cases
+📊 Resume screening for recruiters
+🎯 Candidate evaluation
+⚡ Quick skill extraction
+🤖 AI-powered HR assistant
+💡 Key Highlights
+Built a complete RAG pipeline from scratch
+Uses semantic search instead of keyword matching
+Separates retrieval and generation for accuracy
+Designed with real-world recruiter use case
 
-🧠 Use Cases:
+📌 Future Improvements
+📁 Multi-resume comparison
+📊 Candidate ranking system
+🌍 Deployment (cloud + Docker)
+🎨 Enhanced UI/UX
+👤 Author
 
-Recruiter resume screening
-Candidate evaluation
-Quick skill extraction
-
-📌 Future Improvements:
-
-UI (React frontend)
-Multi-document support
-Ranking improvements
-Deployment (Docker + cloud)
-
-
-👤 Author:
 Divya M K
+Python Backend Developer | FastAPI | AI Applications
