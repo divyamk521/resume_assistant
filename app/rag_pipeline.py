@@ -14,9 +14,6 @@ def chunk_text(text: str):
 
 
 def create_vector_store(documents):
-    """
-    Convert chunks into embeddings and store in FAISS
-    """
     embedding_model = get_embedding_model()
 
     vectorstore = FAISS.from_documents(
@@ -25,3 +22,33 @@ def create_vector_store(documents):
     )
 
     return vectorstore
+
+
+def load_vector_store():
+    """
+    Load saved FAISS vector DB
+    """
+    embedding_model = get_embedding_model()
+
+    vectorstore = FAISS.load_local(
+        "vectorstore",
+        embedding_model,
+        allow_dangerous_deserialization=True
+    )
+
+    return vectorstore
+
+
+def retrieve_chunks(query: str):
+    """
+    Retrieve relevant chunks based on user query
+    """
+    vectorstore = load_vector_store()
+
+    retriever = vectorstore.as_retriever(
+        search_kwargs={"k": 3}  
+    )
+
+    docs = retriever.invoke(query)
+
+    return docs
