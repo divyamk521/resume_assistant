@@ -1,0 +1,15 @@
+# virtual env
+venv/
+
+# env files
+.env
+
+# python cache
+__pycache__/
+*.pyc
+
+# vector DB
+vectorstore/
+
+# uploaded files
+data/
