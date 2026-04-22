@@ -1,10 +1,20 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
 from app.loader import load_pdf
 from app.rag_pipeline import chunk_text, create_vector_store, generate_answer
 
 app = FastAPI()
+
+# ✅ Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # for dev only
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 UPLOAD_DIR = "data"
 VECTORSTORE_DIR = "vectorstore"
@@ -24,7 +34,6 @@ def root():
 
 @app.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
-
     if not file.filename.endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files allowed")
 
@@ -45,20 +54,17 @@ async def upload_pdf(file: UploadFile = File(...)):
     vectorstore = create_vector_store(chunks)
     vectorstore.save_local(VECTORSTORE_DIR)
 
-    return {
-        "message": "Resume processed successfully"
-    }
+    return {"message": "Resume processed successfully"}
 
 
 @app.post("/query")
 def query_rag(request: QueryRequest):
     try:
         answer = generate_answer(request.question)
-        return {
-            "question": request.question,
-            "answer": answer
-        }
-
     except Exception as e:
-        print("ERROR:", str(e))  # 👈 IMPORTANT
         raise HTTPException(status_code=500, detail=str(e))
+
+    return {
+        "question": request.question,
+        "answer": answer
+    }
